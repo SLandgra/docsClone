@@ -1,6 +1,6 @@
 import React from 'react';
 import  ReactDOM from 'react-dom';
-import {Editor, EditorState, RichUtils} from 'draft-js';
+import {Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap} from 'draft-js';
 import { HashRouter } from 'react-router-dom';
 import TopBar from './TopBar';
 
@@ -9,6 +9,15 @@ import TopBar from './TopBar';
 // .then(resp => resp.text())
 // .then(text => console.log(text))
 // .catch(err => {throw err})
+var Immutable = require('immutable');
+
+const blockRenderMap = Immutable.Map({
+  'rightAlign': {wrapper: (<div className='right' style={{'text-align':'right'}}></div>)},
+  'leftAlign': {wrapper: (<div className='left' style={{'text-align':'left'}}></div>)},
+  'centerAlign': {wrapper: (<div className='center' style={{'text-align':'center'}}></div>)}
+});
+
+const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
 class MyEditor extends React.Component {
   constructor(props) {
@@ -39,7 +48,13 @@ class MyEditor extends React.Component {
   }
 
   _onLeftAlignClick() {
-    this.setState({textAlignment: 'left'});
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'leftAlign'));
+  }
+  _onCenterAlignClick() {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'centerAlign'));
+  }
+  _onRightAlignClick() {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'rightAlign'));
   }
 
   render() {
@@ -51,6 +66,8 @@ class MyEditor extends React.Component {
           onULClick={this._onTextEditClick.bind(this, 'UNDERLINE')}
           onStrikeClick={this._onTextEditClick.bind(this, 'STRIKETHROUGH')}
           onLeftAlignClick={this._onLeftAlignClick.bind(this)}
+          onRightAlignClick={this._onRightAlignClick.bind(this)}
+          onCenterAlignClick={this._onCenterAlignClick.bind(this)}
         />
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}} onClick={this.focus}>
@@ -60,6 +77,7 @@ class MyEditor extends React.Component {
               handleKeyCommand={this.handleKeyCommand}
               onChange={this.onChange}
               ref={this.setDomEditorRef}
+              blockRenderMap={extendedBlockRenderMap}
             />
           </div>
         </div>
