@@ -44,7 +44,7 @@ class MyEditor extends React.Component {
 
   render() {
     return (
-      <div style={{backgroundColor: '#f1f1f1', display: 'flex', flexDirection: 'column'}}>
+      <div style={{backgroundColor: '#e9e9e9', display: 'flex', flexDirection: 'column'}}>
         <TopBar
           onBoldClick={this._onTextEditClick.bind(this, 'BOLD')}
           onItalicClick={this._onTextEditClick.bind(this, 'ITALIC')}
@@ -52,7 +52,7 @@ class MyEditor extends React.Component {
           onStrikeClick={this._onTextEditClick.bind(this, 'STRIKETHROUGH')}
           onLeftAlignClick={this._onLeftAlignClick.bind(this)}
         />
-        <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', marginLeft: '110px', marginTop: '200px'}} onClick={this.focus}>
+        <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', marginLeft: '200px', marginTop: '200px'}} onClick={this.focus}>
           <Editor
             editorState={this.state.editorState}
             textAlignment={this.state.textAlignment}
