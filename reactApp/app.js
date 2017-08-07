@@ -70,7 +70,7 @@ class MyEditor extends React.Component {
           onCenterAlignClick={this._onCenterAlignClick.bind(this)}
         />
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}} onClick={this.focus}>
+          <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}} onClick={()=>this.domEditor.focus()}>
             <Editor
               editorState={this.state.editorState}
               textAlignment={this.state.textAlignment}
