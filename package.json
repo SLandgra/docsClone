@@ -33,7 +33,10 @@
     "eslint-plugin-react": "^5.2.2"
   },
   "dependencies": {
+    "draft-js": "^0.10.1",
+    "draft-js-alignment-plugin": "^2.0.0-beta1",
     "express": "^4.15.3",
+    "immutable": "^3.8.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
   }
