@@ -52,14 +52,16 @@ class MyEditor extends React.Component {
           onStrikeClick={this._onTextEditClick.bind(this, 'STRIKETHROUGH')}
           onLeftAlignClick={this._onLeftAlignClick.bind(this)}
         />
-        <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', marginLeft: '200px', marginTop: '200px'}} onClick={this.focus}>
-          <Editor
-            editorState={this.state.editorState}
-            textAlignment={this.state.textAlignment}
-            handleKeyCommand={this.handleKeyCommand}
-            onChange={this.onChange}
-            ref={this.setDomEditorRef}
-          />
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}} onClick={this.focus}>
+            <Editor
+              editorState={this.state.editorState}
+              textAlignment={this.state.textAlignment}
+              handleKeyCommand={this.handleKeyCommand}
+              onChange={this.onChange}
+              ref={this.setDomEditorRef}
+            />
+          </div>
         </div>
       </div>
     );
