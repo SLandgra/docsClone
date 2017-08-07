@@ -10,9 +10,9 @@ import TopBar from './TopBar';
 var Immutable = require('immutable');
 
 const blockRenderMap = Immutable.Map({
-  'rightAlign': {wrapper: (<div className='right' style={{'text-align':'right'}}></div>)},
-  'leftAlign': {wrapper: (<div className='left' style={{'text-align':'left'}}></div>)},
-  'centerAlign': {wrapper: (<div className='center' style={{'text-align':'center'}}></div>)}
+  'rightAlign': {wrapper: (<div className='right' style={{'textAlign':'right'}}></div>)},
+  'leftAlign': {wrapper: (<div className='left' style={{'textAlign':'left'}}></div>)},
+  'centerAlign': {wrapper: (<div className='center' style={{'textAlign':'center'}}></div>)}
 });
 
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
@@ -43,20 +43,20 @@ class Document extends React.Component {
 
   _onTextEditClick(input) {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, input));
-    this.domEditor.focus();
+    //this.domEditor.focus();
   }
 
   _onLeftAlignClick() {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'leftAlign'));
-    this.domEditor.focus();
+    //this.domEditor.focus();
   }
   _onCenterAlignClick() {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'centerAlign'));
-    this.domEditor.focus();
+    //this.domEditor.focus();
   }
   _onRightAlignClick() {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'rightAlign'));
-    this.domEditor.focus();
+    //this.domEditor.focus();
   }
 
   render() {

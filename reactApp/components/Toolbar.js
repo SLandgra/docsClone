@@ -1,7 +1,7 @@
 import React from 'react';
 import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
 
-const Toolbar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftAlignClick, onCenterAlignClick, onRightAlignClick }) => {
+const Toolbar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftAlignClick, onRightAlignClick, onCenterAlignClick }) => {
   return (
     <div style={{display: 'flex', overflow: 'hidden', width: '100%', backgroundColor: '#e9e9e9', padding: '20px 0px 20px 40px', borderBottom: '2px solid grey'}}>
       <ButtonGroup style={{marginRight: '5px'}}>

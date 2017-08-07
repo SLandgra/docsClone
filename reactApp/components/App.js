@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 
-//import Document from './Document';
+import Document from './Document';
 import Login from './Login';
 
 class App extends React.Component {
@@ -9,7 +9,7 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <div>
-          <Login />
+          <Document />
         </div>
       </BrowserRouter>
     );
