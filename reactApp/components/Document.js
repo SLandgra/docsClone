@@ -48,12 +48,15 @@ class Document extends React.Component {
 
   _onLeftAlignClick() {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'leftAlign'));
+    this.domEditor.focus();
   }
   _onCenterAlignClick() {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'centerAlign'));
+    this.domEditor.focus();
   }
   _onRightAlignClick() {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'rightAlign'));
+    this.domEditor.focus();
   }
 
   render() {
@@ -69,7 +72,7 @@ class Document extends React.Component {
           onCenterAlignClick={this._onCenterAlignClick.bind(this)}
         />
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}} onClick={this.focus}>
+          <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}} onClick={()=>this.domEditor.focus()}>
             <Editor
               editorState={this.state.editorState}
               textAlignment={this.state.textAlignment}
