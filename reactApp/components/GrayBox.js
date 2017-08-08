@@ -23,11 +23,11 @@ class GrayBox extends React.Component {
     axios.post('http://localhost:3000/create', {
       title: this.state.docName,
       id: localStorage.getItem('user_id'),
-      password: this.props.password,
+      password: localStorage.getItem('password'),
     })
     .then(response => {
-      this.props.createDoc(response.data.doc);
       this.setState({docName: ''});
+      window.location.reload();
     })
     .catch(err => {
       console.log("Error in onCreateClick in GrayBox", err);

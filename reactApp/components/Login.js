@@ -39,9 +39,6 @@ class Login extends React.Component {
       if (! response.data.login) {
         alert(response.data.error);
       } else {
-        // this.props.saveUserId(response.data.user_id);
-        // this.props.savePassword(this.state.password);
-        // this.props.saveDocArray(response.data.docs);
         localStorage.setItem('user_id', response.data.user_id);
         localStorage.setItem('password', this.state.password);
         this.setState({ redirect: true });
