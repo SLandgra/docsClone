@@ -52,7 +52,8 @@ app.post('/login', function(req, res) {
       });
     }else if(user){
       res.send({
-        login: true
+        login: true,
+        user_id: user._id
       });
     }else {
       res.send({
@@ -98,6 +99,26 @@ app.post('/save', function(req,res){
     }
   });
 });
+
+app.post('/addSharedDocument', async function(req, res){
+
+  var doc = await Doc.findById(req.body.doc_id);
+  var user = await User.findById(req.body.user_id);
+  if(doc){
+    user.docs.push(doc._id);
+    user.save();
+    res.send({
+      added: true,
+      docs: user.docs
+    });
+  }else{
+    res.send({
+      added: false,
+      error: 'Document not found'
+    });
+  }
+});
+
 
 app.listen(3000, function () {
   console.log('Backend server for Electron App running on port 3000!');
