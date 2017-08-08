@@ -7,10 +7,11 @@ var userSchema = mongoose.Schema({
 });
 
 var docSchema = mongoose.Schema({
-  content: String,
+  content: Array,
   owner: String,
   contributors: Array,
-  password: String
+  password: String,
+  title: String
 });
 
 var User = mongoose.model('User', userSchema);
