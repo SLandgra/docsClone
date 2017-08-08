@@ -1,9 +1,18 @@
 const express = require('express');
 const app = express();
 
+
 // Example route
-app.get('/', function (req, res) {
-  res.send('Hello World!');
+// app.get('/', function (req, res) {
+//   res.send('Hello World!');
+// });
+
+app.post('/register', function(req, res) {
+  
+});
+
+app.post('/login', function(req, res) {
+
 });
 
 app.listen(3000, function () {
