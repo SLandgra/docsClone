@@ -1,7 +1,7 @@
 import React from 'react';
 import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
 
-const Toolbar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftAlignClick, onRightAlignClick, onCenterAlignClick }) => {
+const Toolbar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftAlignClick, onRightAlignClick, onCenterAlignClick, onFontSizeChange, onFontColorChange }) => {
   return (
     <div style={{display: 'flex', overflow: 'hidden', width: '100%', backgroundColor: '#e9e9e9', padding: '20px 0px 20px 40px', borderBottom: '2px solid grey'}}>
       <ButtonGroup style={{marginRight: '5px'}}>
@@ -19,12 +19,25 @@ const Toolbar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftA
         </Button>
       </ButtonGroup>
       <ButtonGroup style={{marginRight: '5px'}}>
-        <Button>
-          <Glyphicon glyph="text-size"></Glyphicon>
-        </Button>
-        <Button>
-          <Glyphicon glyph="font"></Glyphicon>
-        </Button>
+        <select onChange={(e) => onFontSizeChange(e)} style={{height: '100%'}}>
+            <optgroup>Font Size</optgroup>
+            <option value="8">8</option>
+            <option value="12">12</option>
+            <option value="16">16</option>
+            <option value="20">20</option>
+            <option value="24">24</option>
+            <option value="28">28</option>
+          </select>
+        <select onChange={(e) => onFontSizeChange(e)} style={{height: '100%'}}>
+          <optgroup>Font Color</optgroup>
+            <option value="red" style={{background:"red"}}></option>
+            <option value="orange" style={{background:"orange"}}></option>
+            <option value="yellow" style={{background:"yellow"}}></option>
+            <option value="green" style={{background:"green"}}></option>
+            <option value="blue" style={{background:"blue"}}></option>
+            <option value="purple" style={{background:"purple"}}></option>
+            <option value="black" style={{background:"black"}}></option>
+        </select>
       </ButtonGroup>
       <ButtonGroup style={{marginRight: '5px'}}>
         <Button>
