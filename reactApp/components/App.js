@@ -9,7 +9,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user_id: 'asf',
+      user_id: '',
       password: '',
     };
   }
@@ -29,7 +29,7 @@ class App extends React.Component {
           <Switch>
             <Route exact={true} path="/home" render={() => (<HomePage user_id={this.state.user_id} password={this.state.password}/>)}/>
             <Route exact={true} path="/register" component={Register} />
-            <Route exact={true} path="/login" render={() => <Login saveUserId={this.saveUserId} savePassword={this.savePassword}/>}/>
+            <Route exact={true} path="/login" render={() => <Login saveUserId={this.saveUserId.bind(this)} savePassword={this.savePassword.bind(this)}/>}/>
             <Route path="/">
               {! this.state.user_id ? <Redirect to="/login" /> : <Redirect to="/home" />}
             </Route>

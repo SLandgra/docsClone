@@ -20,7 +20,7 @@ class GrayBox extends React.Component {
       alert('Document name is empty. Please fill out before click Create.');
       return;
     }
-    axios.post('/create', {
+    axios.post('http://localhost:3000/create', {
       docName: this.state.docName,
       id: this.props.user_id,
       password: this.props.password,
@@ -41,7 +41,7 @@ class GrayBox extends React.Component {
       return;
     }
     this.setState({sharedDocId: ''});
-    axios.post('/addSharedDocument', {
+    axios.post('http://localhost:3000/addSharedDocument', {
       id: this.state.sharedDocId
     })
     .then(response => {
