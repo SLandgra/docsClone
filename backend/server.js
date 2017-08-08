@@ -44,7 +44,7 @@ app.post('/register', function(req, res) {
 
 app.post('/login', function(req, res) {
   console.log('this is req.body', req.body);
-  
+
   User.findOne({email: req.body.email, password: req.body.password}, function(err,user){
     if(err){
       console.log(err);
