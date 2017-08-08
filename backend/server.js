@@ -3,7 +3,7 @@ const app = express();
 const models = require('../reactApp/models');
 const User = models.User;
 const Doc = models.Doc;
-var connect = 'mongodb://thanh:thanh@ds145312.mlab.com:45312/thanhnguyen';
+var connect = 'mongodb://admin:pass@ds127993.mlab.com:27993/scheduler_bot';
 
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -53,9 +53,16 @@ app.post('/login', function(req, res) {
         error: err
       });
     } else if(user){
-      res.send({
-        login: true,
-        user_id: user._id
+      var promiseArray = user.docs.map(function(doc){
+        return getDocument(doc);
+      });
+      Promise.all(promiseArray)
+      .then(function(responses){
+        res.send({
+          login: true,
+          user_id: user._id,
+          docs: responses
+        });
       });
     } else {
       res.send({
@@ -66,62 +73,76 @@ app.post('/login', function(req, res) {
   });
 });
 
-// app.post('/create', async function(req,res){
-//   var newDoc = new Doc({
-//     content:'',
-//     owner:req.body.id,
-//     contributors: [req.body.id],
-//     password:  req.body.password
-//   });
-//   var doc = await newDoc.save();
-//   res.send({
-//     doc: doc
-//   });
-// });
-//
-// app.post('/save', function(req,res){
-//   Doc.findById(req.body.id, async function(err,doc){
-//     if(err){
-//       console.log(err);
-//       res.send({
-//         saved: false,
-//         error: err
-//       });
-//     }else if(doc){
-//       doc.content = req.body.content;
-//       await doc.save();
-//       res.send({
-//         saved: true
-//       });
-//     }else{
-//       res.send({
-//         saved: false,
-//         error: 'Could not find document'
-//       });
-//     }
-//   });
-// });
-//
-// app.post('/addSharedDocument', async function(req, res){
-//
-//   var doc = await Doc.findById(req.body.doc_id);
-//   var user = await User.findById(req.body.user_id);
-//   if(doc){
-//     user.docs.push(doc._id);
-//     user.save();
-//     res.send({
-//       added: true,
-//       docs: user.docs
-//     });
-//   }else{
-//     res.send({
-//       added: false,
-//       error: 'Document not found'
-//     });
-//   }
-// });
+app.post('/create', async function(req,res){
+  var newDoc = new Doc({
+    content:[],
+    owner:req.body.id,
+    contributors: [req.body.id],
+    password:  req.body.password
+  });
+  var doc = await newDoc.save();
+  res.send({
+    doc: doc
+  });
+});
+
+app.post('/save', function(req,res){
+  Doc.findById(req.body.id, async function(err,doc){
+    if(err){
+      console.log(err);
+      res.send({
+        saved: false,
+        error: err
+      });
+    }else if(doc){
+      doc.content = req.body.content;
+      await doc.save();
+      res.send({
+        saved: true
+      });
+    }else{
+      res.send({
+        saved: false,
+        error: 'Could not find document'
+      });
+    }
+  });
+});
+
+app.post('/addSharedDocument', async function(req, res){
+
+  var doc = await Doc.findById(req.body.doc_id);
+  var user = await User.findById(req.body.user_id);
+  if(doc){
+    user.docs.push(doc._id);
+    user.save();
+    res.send({
+      added: true,
+      docs: user.docs
+    });
+  }else{
+    res.send({
+      added: false,
+      error: 'Document not found'
+    });
+  }
+});
 
 
 app.listen(3000, function () {
   console.log('Backend server for Electron App running on port 3000!');
 });
+
+
+
+function getDocument(docId){
+  return new Promise(function(resolve, reject){
+    Doc.findById(docId)
+    .then(function(doc){
+      resolve(doc);
+    })
+    .catch(function(err){
+      reject(err);
+    });
+  });
+}
