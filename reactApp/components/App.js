@@ -4,7 +4,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import HomePage from './HomePage';
 import Login from './Login';
 import Register from './Register';
-import Document from './Document';
+// import Document from './Document';
 
 class App extends React.Component {
   render() {
