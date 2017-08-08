@@ -121,7 +121,7 @@ class Document extends React.Component {
   _onSaveClick() {
     axios.post('http://localhost:3000/save', {
       content: convertToRaw(this.sate.editorState.getCurrentContent()),
-      id: this.props.params.doc_id,
+      id: this.props.match.params.id,
     }).then(response => {
       alert('Saved');
     })
