@@ -111,6 +111,12 @@ class Document extends React.Component {
     console.log(fontcolor);
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, fontcolor));
   }
+  _onUnorderedist() {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'unordered-list-item'));
+  }
+  _onOrderedList() {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'ordered-list-item'));
+  }
   render() {
     return (
       <div style={{backgroundColor: '#e9e9e9', display: 'flex', flexDirection: 'column'}}>
@@ -124,6 +130,8 @@ class Document extends React.Component {
           onCenterAlignClick={this._onCenterAlignClick.bind(this)}
           handleFontSizeChange={this._onFontSizeChange.bind(this)}
           handleColorChange={this._onFontColorChange.bind(this)}
+          handleUnorderedChange={this._onUnorderedist.bind(this)}
+          handleOrderedChange={this._onOrderedList.bind(this)}
         />
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}}>
