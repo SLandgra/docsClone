@@ -50,11 +50,11 @@ app.post('/login', function(req, res) {
         login: false,
         error: err
       });
-    }else if(user){
+    } else if(user){
       res.send({
         login: true
       });
-    }else {
+    } else {
       res.send({
         login: false,
         error: 'Could not find user'
