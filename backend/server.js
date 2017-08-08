@@ -116,6 +116,7 @@ app.post('/save', function(req,res){
       doc.save(function(err) {
         if (err) {
           res.send({
+            saved: false,
             error: err
           });
         } else {
@@ -133,24 +134,28 @@ app.post('/save', function(req,res){
   });
 });
 
-// app.post('/addSharedDocument', async function(req, res){
-//
-//   var doc = await Doc.findById(req.body.doc_id);
-//   var user = await User.findById(req.body.user_id);
-//   if(doc){
-//     user.docs.push(doc._id);
-//     user.save();
-//     res.send({
-//       added: true,
-//       docs: user.docs
-//     });
-//   }else{
-//     res.send({
-//       added: false,
-//       error: 'Document not found'
-//     });
-//   }
-// });
+app.post('/addSharedDocument', function(req, res){
+  Doc.findById(req.body.doc_id)
+  .then(function(err, doc){
+    User.findbyID(req.body.user_id)
+    .then(function(err, user){
+      if(doc){
+        user.docs.push(doc._id);
+        user.save();
+        doc.contributors.push(user._id);
+        doc.save();
+        res.send({
+          added: true,
+        });
+      }else{
+        res.send({
+          added: false,
+          error: 'Document not found'
+        });
+      }
+    });
+  });
+});
 
 
 app.listen(3000, function () {
