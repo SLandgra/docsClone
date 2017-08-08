@@ -41,6 +41,7 @@ class Login extends React.Component {
       } else {
         this.props.saveUserId(response.data.user_id);
         this.props.savePassword(this.state.password);
+        this.props.saveDocArray(response.data.docs);
         this.setState({ redirect: true });
       }
     })
