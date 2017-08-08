@@ -66,6 +66,8 @@ class Document extends React.Component {
     super(props);
     this.state = {
       editorState: EditorState.createEmpty(),
+      name: '',
+      id: '',
     };
     this.onChange = (editorState) => this.setState({editorState});
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
@@ -74,6 +76,16 @@ class Document extends React.Component {
 
   componentDidMount() {
     this.domEditor.focus();
+    axios.post('http://localhost:3000/document', {
+      id: this.props.match.params.id
+    })
+    .then(response => {
+      console.log(response);
+      this.setState({name: response.title, id: response._id});
+    })
+    .catch(err => {
+      console.log("Error in Document componentDidMount", err);
+    });
   }
 
   handleKeyCommand(command) {
@@ -133,6 +145,8 @@ class Document extends React.Component {
     return (
       <div style={{backgroundColor: '#e9e9e9', display: 'flex', flexDirection: 'column'}}>
         <TopBar
+          name={this.state.name}
+          id={this.state.id}
           onBoldClick={this._onTextEditClick.bind(this, 'BOLD')}
           onItalicClick={this._onTextEditClick.bind(this, 'ITALIC')}
           onULClick={this._onTextEditClick.bind(this, 'UNDERLINE')}

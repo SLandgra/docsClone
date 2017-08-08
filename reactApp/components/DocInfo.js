@@ -1,10 +1,10 @@
 import React from 'react';
 
-const DocInfo = () => {
+const DocInfo = ({ name, id}) => {
   return (
     <div style={{paddingLeft: '40px'}}>
-      <h2>Name: This is Doc Name</h2>
-      <p>Document sharing ID: 9287459264562752975</p>
+      <h2>Name: {name}</h2>
+      <p>Document sharing ID: {id}</p>
     </div>
   );
 };

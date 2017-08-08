@@ -25,7 +25,7 @@ class App extends React.Component {
             <Route exact={true} path="/home" render={() => (<HomePage />)}/>
             <Route exact={true} path="/register" component={Register} />
             <Route exact={true} path="/login" render={() => <Login />}/>
-            <Route exact={true} path="/document/:id" render={() => <Document />} />
+            <Route exact={true} path="/document/:id" component={Document}/>
             <Route path="/">
               {! localStorage.getItem('user_id') ? <Redirect to="/login" /> : <Redirect to="/home" />}
             </Route>
