@@ -1,6 +1,7 @@
 import React from 'react';
-import {Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap} from 'draft-js';
+import {Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, convertToRaw} from 'draft-js';
 import TopBar from './TopBar';
+import axios from 'axios';
 
 /* This can check if your electron app can communicate with your backend */
 // fetch('http://localhost:3000')
@@ -117,6 +118,17 @@ class Document extends React.Component {
   _onOrderedList() {
     this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'ordered-list-item'));
   }
+  _onSaveClick() {
+    axios.post('http://localhost:3000/save', {
+      content: convertToRaw(this.sate.editorState.getCurrentContent()),
+      id: this.props.params.doc_id,
+    }).then(response => {
+      alert('Saved');
+    })
+    .catch(err => {
+      alert('Error', err);
+    });
+  }
   render() {
     return (
       <div style={{backgroundColor: '#e9e9e9', display: 'flex', flexDirection: 'column'}}>
@@ -132,6 +144,7 @@ class Document extends React.Component {
           handleColorChange={this._onFontColorChange.bind(this)}
           handleUnorderedChange={this._onUnorderedist.bind(this)}
           handleOrderedChange={this._onOrderedList.bind(this)}
+          onSaveClick={this._onSaveClick.bind(this)}
         />
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}}>
