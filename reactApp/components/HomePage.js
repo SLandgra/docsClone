@@ -29,11 +29,10 @@ class HomePage extends React.Component {
       <div style={{display: 'flex', flexDirection: 'column'}}>
         <BlueBar />
         <GrayBox />
-        {/* <YourDocuments docs={this.props.docs}/> */}
         <div style={{padding: '20px 18% 0px 18%', display: 'flex', flexDirection: 'column', marginBottom: '60px'}}>
           <h5 style={{color: '#3f3f3f', marginBottom: '20px'}}>Recent documents</h5>
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'left', flexWrap: 'wrap'}}>
-            {this.state.docs.map(doc => <SingleDocument key={doc._id} name={doc.title}/>)}
+            {this.state.docs.map(doc => <SingleDocument key={doc._id} doc={doc}/>)}
           </div>
         </div>
       </div>
