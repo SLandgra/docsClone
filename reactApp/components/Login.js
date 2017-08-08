@@ -10,7 +10,6 @@ class Login extends React.Component {
       password: '',
       redirect: false,
     };
-    var self = this;
   }
 
   onEmailChange(e) {
@@ -23,7 +22,8 @@ class Login extends React.Component {
     this.setState({password: e.target.value});
   }
 
-  onLoginClick() {
+  onLoginClick(e) {
+    e.preventDefault();
     if (! this.state.email) {
       alert("Email field is empty.");
       return;
@@ -39,9 +39,11 @@ class Login extends React.Component {
       if (! response.data.login) {
         alert(response.data.error);
       } else {
-        this.props.saveUserId(response.data.user_id);
-        this.props.savePassword(this.state.password);
-        this.props.saveDocArray(response.data.docs);
+        // this.props.saveUserId(response.data.user_id);
+        // this.props.savePassword(this.state.password);
+        // this.props.saveDocArray(response.data.docs);
+        localStorage.setItem('user_id', response.data.user_id);
+        localStorage.setItem('password', this.state.password);
         this.setState({ redirect: true });
       }
     })
@@ -59,10 +61,10 @@ class Login extends React.Component {
           <div style={{height: '400px', width: '400px', border: '3px solid black', borderRadius: '15px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <h1 style={{marginBottom: '30px'}}>Document Share</h1>
             <h3>Log In</h3>
-            <form style={{display: 'flex', flexDirection: 'column'}}>
+            <form style={{display: 'flex', flexDirection: 'column'}} onSubmit={this.onLoginClick.bind(this)}>
               <input type="text" placeholder="Email" style={{marginBottom: '5px'}} value={this.state.email} onChange={(e) => this.onEmailChange(e)}/>
               <input type="password" placeholder="Password" style={{marginBottom: '5px'}} value={this.state.password} onChange={(e) => this.onPassChange(e)}/>
-              <input type="submit" value="Log In" onClick={this.onLoginClick.bind(this)}/>
+              <input type="submit" value="Log In" />
             </form>
             <Link style={{marginTop: '100px'}} to="/register">Not register? Click here to register</Link>
           </div>

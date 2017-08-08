@@ -27,12 +27,18 @@ class App extends React.Component {
     this.setState({docs: input});
   }
 
+  createDoc(input) {
+    var docArray = this.state.docs.slice();
+    docArray.unshift(input);
+    this.setState({docs: docArray});
+  }
+
   render() {
     return (
       <HashRouter>
         <div>
           <Switch>
-            <Route exact={true} path="/home" render={() => (<HomePage user_id={this.state.user_id} password={this.state.password} docs={this.state.docs}/>)}/>
+            <Route exact={true} path="/home" render={() => (<HomePage user_id={this.state.user_id} password={this.state.password} docs={this.state.docs} createDoc={this.createDoc.bind(this)}/>)}/>
             <Route exact={true} path="/register" component={Register} />
             <Route exact={true} path="/login" render={() => <Login saveUserId={this.saveUserId.bind(this)} savePassword={this.savePassword.bind(this)} saveDocArray={this.saveDocArray.bind(this)}/>}/>
             <Route path="/">

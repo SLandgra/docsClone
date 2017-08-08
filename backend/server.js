@@ -3,7 +3,7 @@ const app = express();
 const models = require('../reactApp/models');
 const User = models.User;
 const Doc = models.Doc;
-var connect = 'mongodb://admin:pass@ds127993.mlab.com:27993/scheduler_bot';
+var connect = 'mongodb://thanh:thanh@ds145312.mlab.com:45312/thanhnguyen';
 
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -43,8 +43,6 @@ app.post('/register', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
-  console.log('this is req.body', req.body);
-
   User.findOne({email: req.body.email, password: req.body.password}, function(err,user){
     if(err){
       console.log(err);
@@ -53,17 +51,10 @@ app.post('/login', function(req, res) {
         error: err
       });
     } else if(user){
-      var promiseArray = user.docs.map(function(doc){
-        return getDocument(doc);
-      });
-      Promise.all(promiseArray)
-      .then(function(responses){
-        res.send({
-          login: true,
-          user_id: user._id,
-          docs: responses
-        });
-      });
+      res.send({
+        login: true,
+        user_id: user._id,
+      })
     } else {
       res.send({
         login: false,
@@ -73,21 +64,47 @@ app.post('/login', function(req, res) {
   });
 });
 
-app.post('/create', async function(req,res){
+app.post('/getDocs', function(req, res) {
+  User.findById(req.body.id, function(err, user){
+    var promiseArray = user.docs.map(function(doc){
+      return getDocument(doc);
+    });
+    Promise.all(promiseArray)
+    .then(function(responses){
+      res.send({
+        docs: responses
+      });
+    });
+  });
+});
+
+app.post('/create', function(req,res){
   var newDoc = new Doc({
     content:[],
     owner:req.body.id,
     contributors: [req.body.id],
-    password:  req.body.password
+    password:  req.body.password,
+    title: req.body.title
   });
-  var doc = await newDoc.save();
-  res.send({
-    doc: doc
+  newDoc.save(function(err, doc){
+    if(err){
+      res.send({
+        error: err
+      });
+    } else{
+      User.findById(req.body.id, function(err,user){
+        user.docs.push(doc._id);
+        user.save();
+      });
+      res.send({
+        doc: newDoc
+      });
+    }
   });
 });
 
 app.post('/save', function(req,res){
-  Doc.findById(req.body.id, async function(err,doc){
+  Doc.findById(req.body.id, function(err,doc){
     if(err){
       console.log(err);
       res.send({
@@ -96,11 +113,18 @@ app.post('/save', function(req,res){
       });
     }else if(doc){
       doc.content = req.body.content;
-      await doc.save();
-      res.send({
-        saved: true
+      doc.save(function(err) {
+        if (err) {
+          res.send({
+            error: err
+          });
+        } else {
+          res.send({
+            saved: true
+          });
+        }
       });
-    }else{
+    } else {
       res.send({
         saved: false,
         error: 'Could not find document'
@@ -109,24 +133,24 @@ app.post('/save', function(req,res){
   });
 });
 
-app.post('/addSharedDocument', async function(req, res){
-
-  var doc = await Doc.findById(req.body.doc_id);
-  var user = await User.findById(req.body.user_id);
-  if(doc){
-    user.docs.push(doc._id);
-    user.save();
-    res.send({
-      added: true,
-      docs: user.docs
-    });
-  }else{
-    res.send({
-      added: false,
-      error: 'Document not found'
-    });
-  }
-});
+// app.post('/addSharedDocument', async function(req, res){
+//
+//   var doc = await Doc.findById(req.body.doc_id);
+//   var user = await User.findById(req.body.user_id);
+//   if(doc){
+//     user.docs.push(doc._id);
+//     user.save();
+//     res.send({
+//       added: true,
+//       docs: user.docs
+//     });
+//   }else{
+//     res.send({
+//       added: false,
+//       error: 'Document not found'
+//     });
+//   }
+// });
 
 
 app.listen(3000, function () {
