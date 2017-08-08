@@ -78,6 +78,15 @@ app.post('/getDocs', function(req, res) {
   });
 });
 
+app.post('/document', function(req,res){
+  Doc.findById(req.body.id, function(err, doc){
+    res.send({
+      title: doc.title,
+      content: doc.content
+    });
+  });
+});
+
 app.post('/create', function(req,res){
   var newDoc = new Doc({
     content:[],
