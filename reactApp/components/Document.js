@@ -78,11 +78,7 @@ class Document extends React.Component {
     this.state.socket.emit('documentChange', convertToRaw(this.state.editorState.getCurrentContent()));
   }
   componentDidMount() {
-<<<<<<< HEAD
     var that = this;
-=======
-    this.domEditor.focus();
->>>>>>> c2e21546a139500135d90f60613542208c5205f1
     this.state.socket.on('connect', ()=> {
       console.log('connected');
       that.state.socket.on('documentEdit', function(state){
