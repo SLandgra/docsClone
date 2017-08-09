@@ -1,5 +1,5 @@
 import React from 'react';
-import {Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, convertToRaw} from 'draft-js';
+import {Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, convertToRaw, convertFromRaw} from 'draft-js';
 import TopBar from './TopBar';
 import axios from 'axios';
 
@@ -80,8 +80,12 @@ class Document extends React.Component {
       id: this.props.match.params.id
     })
     .then(response => {
-      console.log(response);
-      this.setState({name: response.title, id: response._id});
+      var newstate = this.state.editorState;
+      var newcontent = response.data.content[response.data.content.length-1];
+      newstate.content = convertFromRaw(newcontent);
+      console.log('newstate v2', newstate.content);
+      this.setState({name: response.data.title, id: this.props.match.params.id, editorState: newstate});
+
     })
     .catch(err => {
       console.log("Error in Document componentDidMount", err);
@@ -132,7 +136,7 @@ class Document extends React.Component {
   }
   _onSaveClick() {
     axios.post('http://localhost:3000/save', {
-      content: convertToRaw(this.sate.editorState.getCurrentContent()),
+      content: convertToRaw(this.state.editorState.getCurrentContent()),
       id: this.props.match.params.id,
     }).then(response => {
       alert('Saved');
