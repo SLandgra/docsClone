@@ -8,6 +8,44 @@ var connect = 'mongodb://thanh:thanh@ds145312.mlab.com:45312/thanhnguyen';
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+// var room = io.sockets.adapter.rooms['doc'];
+var clients = [];
+io.on('connection', function(socket){
+  console.log('Connected to the socket');
+  socket.on('setstuff', function(clientID) {
+    socket.user = clientID;
+    clients.push(clientID);
+  });
+
+  socket.on('working', function(){
+    console.log('working');
+  });
+
+  if(clients.length>=6){
+    for(var i = 0; i<clients.length; i++) {
+      if(clients[i] === socket.user) {
+        clients.splice(1, i);
+      }
+    }
+    socket.emit('roomfull','Room is Full');
+  }else{
+    socket.on('documentChange', function(docChange){
+      io.broadcast('documentEdit', docChange);
+    });
+
+    socket.on('cursorClick', function(position){
+      io.broadcast('cursorPosition', position);
+    });
+
+    socket.on('highlight', function(highlight){
+      io.broadcast('highlighter', highlight);
+    });
+  }
+});
+
+
 mongoose.connect(connect);
 
 app.use(bodyParser.json());
@@ -173,7 +211,7 @@ app.post('/addSharedDocument', function(req, res) {
 });
 
 
-app.listen(3000, function () {
+server.listen(3000, function () {
   console.log('Backend server for Electron App running on port 3000!');
 });
 

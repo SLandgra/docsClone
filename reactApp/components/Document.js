@@ -68,19 +68,24 @@ class Document extends React.Component {
       editorState: EditorState.createEmpty(),
       name: '',
       id: '',
-      socket: io()
+      socket: io('http://localhost:3000')
     };
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.setDomEditorRef = ref => this.domEditor = ref;
   }
   onChange(editorState){
     this.setState({editorState});
+    this.state.socket.emmit('documentChange', convertToRaw(editorState));
   }
   componentDidMount() {
     this.domEditor.focus();
     this.state.socket.on('connect', ()=> {
       console.log('connected');
-      this.state.socket.emit('yall gon make us start this socket up in here up in here');
+      this.state.socket.on('documentEdit', function(state){
+        var newcontent = convertFromRaw(newcontent);
+        newcontent = EditorState.createWithContent(newcontent);
+        this.setState({editorState: newcontent});
+      });
     });
   }
   componentWillMount() {
