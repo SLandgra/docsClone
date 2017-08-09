@@ -32,7 +32,7 @@ io.on('connection', function(socket){
     socket.emit('roomfull','Room is Full');
   }else{
     socket.on('documentChange', function(docChange){
-      io.emit('documentEdit', docChange);
+      io.broadcast('documentEdit', docChange);
     });
 
     socket.on('cursorClick', function(position){

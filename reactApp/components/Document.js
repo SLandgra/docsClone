@@ -75,11 +75,16 @@ class Document extends React.Component {
   }
   onChange(editorState){
     this.setState({editorState});
+    this.state.socket.emmit('documentChange', convertToRaw(editorState));
   }
   componentDidMount() {
     this.state.socket.on('connect', ()=> {
       console.log('connected');
-      this.state.socket.emit('working');
+      this.state.socket.on('documentEdit', function(state){
+        var newcontent = convertFromRaw(newcontent);
+        newcontent = EditorState.createWithContent(newcontent);
+        this.setState({editorState: newcontent});
+      });
     });
   }
   componentWillMount() {
