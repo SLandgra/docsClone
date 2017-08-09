@@ -3,7 +3,7 @@ const app = express();
 const models = require('../reactApp/models');
 const User = models.User;
 const Doc = models.Doc;
-var connect = 'mongodb://thanh:thanh@ds145312.mlab.com:45312/thanhnguyen';
+var connect = 'mongodb://admin:pass@ds058369.mlab.com:58369/docsclone';
 
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -159,7 +159,7 @@ app.post('/save', function(req,res){
         error: err
       });
     }else if(doc){
-      doc.content = req.body.content;
+      doc.content.push(req.body.content);
       doc.save(function(err) {
         if (err) {
           res.send({
