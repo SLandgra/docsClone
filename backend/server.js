@@ -159,7 +159,7 @@ app.post('/save', function(req,res){
         error: err
       });
     }else if(doc){
-      doc.content.push(req.body.content);
+      doc.content.push([req.body.content, req.body.date]);
       doc.save(function(err) {
         if (err) {
           res.send({

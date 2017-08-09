@@ -7,8 +7,6 @@ const Toolbar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftA
     <div style={{display: 'flex', overflow: 'hidden', width: '100%', backgroundColor: '#e9e9e9', padding: '20px 0px 20px 40px', borderBottom: '2px solid grey'}}>
       <ButtonGroup style={{marginRight: '20px'}}>
         <Link to="/home"><Button>Home</Button></Link>
-        <Button onClick={() => onSaveClick()}>Save</Button>
-        <Button onClick={() => onHistoryClick()}>History</Button>
       </ButtonGroup>
       <ButtonGroup style={{marginRight: '5px'}}>
         <Button onClick={() => onBoldClick()}>
@@ -67,6 +65,12 @@ const Toolbar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftA
           <Glyphicon glyph="align-right"></Glyphicon>
         </Button>
       </ButtonGroup>
+      <div style={{float: 'right', marginRight: '5px', textAlign: 'right', marginLeft: 'auto'}}>
+        <ButtonGroup>
+          <Button onClick={() => onSaveClick()}>Save</Button>
+          <Button onClick={() => onHistoryClick()}>History</Button>
+        </ButtonGroup>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, convertToRaw, convertFromRaw} from 'draft-js';
 import TopBar from './TopBar';
+import History from './History';
 import axios from 'axios';
 
 /* This can check if your electron app can communicate with your backend */
@@ -74,6 +75,7 @@ class Document extends React.Component {
     };
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.setDomEditorRef = ref => this.domEditor = ref;
+    this.handleButtonClick = this.handleButtonClick.bind(this);
   }
   onChange(editorState){
     this.setState({editorState});
@@ -98,12 +100,11 @@ class Document extends React.Component {
     .then(response => {
       // var newstate = this.state.editorState;
       if(response.data.content.length === 0){
-        this.setState({name: response.data.title, id: this.props.match.params.id})
+        this.setState({name: response.data.title, id: this.props.match.params.id});
       }else{
-        var newcontent = response.data.content[response.data.content.length-1];
+        var newcontent = response.data.content[response.data.content.length-1][0];
         console.log(newcontent);
         newcontent = convertFromRaw(newcontent);
-        // console.log('newstate v2', newstate.content);
         newcontent= EditorState.createWithContent(newcontent);
         this.setState({name: response.data.title, id: this.props.match.params.id, editorState: newcontent});
       }
@@ -158,6 +159,7 @@ class Document extends React.Component {
   _onSaveClick() {
     axios.post('http://localhost:3000/save', {
       content: convertToRaw(this.state.editorState.getCurrentContent()),
+      date: new Date(),
       id: this.props.match.params.id,
     }).then(response => {
       alert('Saved');
@@ -173,11 +175,25 @@ class Document extends React.Component {
     })
     .then(response => {
       console.log(response);
-      this.setState({historyOn: true, history: response});
+      this.setState({historyOn: !this.state.historyOn, history: response});
     })
     .catch(err => {
       alert('Error:', err);
     });
+  }
+  handleButtonClick(date) {
+    var newcontent;
+    this.state.history.data.doc.content.forEach(function(item) {
+      if(item[1] === date) {
+        console.log(item);
+        newcontent = item[0];
+        newcontent.entityMap = {};
+      }
+    });
+    console.log(newcontent);
+    newcontent = convertFromRaw(newcontent);
+    newcontent= EditorState.createWithContent(newcontent);
+    this.setState({editorState: newcontent});
   }
   render() {
     return (
@@ -199,19 +215,38 @@ class Document extends React.Component {
           onSaveClick={this._onSaveClick.bind(this)}
           onHistoryClick={this._onHistoryClick.bind(this)}
         />
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}}>
-            <Editor
-              customStyleMap={styleMap}
-              editorState={this.state.editorState}
-              textAlignment={this.state.textAlignment}
-              handleKeyCommand={this.handleKeyCommand}
-              onChange={this.onChange.bind(this)}
-              ref={this.setDomEditorRef}
-              blockRenderMap={extendedBlockRenderMap}
-            />
+        {this.state.historyOn ?
+          <div style={{display: 'flex', width: '100%'}}>
+              <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', marginTop: '200px', marginRight: '100px', marginLeft: '100px', marginBottom: '200px', float: 'left', overflow: 'wrap'}}>
+                <Editor
+                  customStyleMap={styleMap}
+                  editorState={this.state.editorState}
+                  textAlignment={this.state.textAlignment}
+                  handleKeyCommand={this.handleKeyCommand}
+                  onChange={this.onChange.bind(this)}
+                  ref={this.setDomEditorRef}
+                  blockRenderMap={extendedBlockRenderMap}
+                />
+              </div>
+            <div style={{float: 'right', width: '500px'}}>
+              <History history={this.state.history} handleClick={this.handleButtonClick}/>
+            </div>
           </div>
-        </div>
+        :
+          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px', overflow: 'wrap'}}>
+              <Editor
+                customStyleMap={styleMap}
+                editorState={this.state.editorState}
+                textAlignment={this.state.textAlignment}
+                handleKeyCommand={this.handleKeyCommand}
+                onChange={this.onChange.bind(this)}
+                ref={this.setDomEditorRef}
+                blockRenderMap={extendedBlockRenderMap}
+              />
+            </div>
+          </div>
+        }
       </div>
     );
   }
