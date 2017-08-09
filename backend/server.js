@@ -202,6 +202,7 @@ app.post('/addSharedDocument', function(req, res) {
           doc.save();
           res.send({
             added: true,
+            doc: doc
           });
         }
       });
