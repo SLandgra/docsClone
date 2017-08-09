@@ -15,6 +15,10 @@ class GrayBox extends React.Component {
     this.setState({docName: e.target.value});
   }
 
+  onAddChange(e) {
+    this.setState({sharedDocId: e.target.value});
+  }
+
   onCreateClick() {
     if (! this.state.docName) {
       alert('Document name is empty. Please fill out before click Create.');
@@ -34,24 +38,22 @@ class GrayBox extends React.Component {
     });
   }
 
-  onAddChange(e) {
-    this.setState({sharedDocId: e.target.value});
-  }
-
   onAddClick() {
     if (! this.state.sharedDocId) {
       alert('ID field is empty. Please fill out before click Add');
       return;
     }
-    this.setState({sharedDocId: ''});
     axios.post('http://localhost:3000/addSharedDocument', {
-      id: this.state.sharedDocId
+      doc_id: this.state.sharedDocId,
+      user_id: localStorage.getItem('user_id')
     })
     .then(response => {
-      if (response.saved) {
-        alert("Success");
+      console.log("this is response", response);
+      if (! response.data.added) {
+        console.log("Error onAddClick GrayBox", response.data.error);
       } else {
-        alert(response.error);
+        this.setState({sharedDocId: ''});
+        window.location.reload();
       }
     })
     .catch(err => {

@@ -143,26 +143,31 @@ app.post('/save', function(req,res){
   });
 });
 
-app.post('/addSharedDocument', function(req, res){
-  Doc.findById(req.body.doc_id)
-  .then(function(err, doc){
-    User.findbyID(req.body.user_id)
-    .then(function(err, user){
-      if(doc){
-        user.docs.push(doc._id);
-        user.save();
-        doc.contributors.push(user._id);
-        doc.save();
-        res.send({
-          added: true,
-        });
-      }else{
-        res.send({
-          added: false,
-          error: 'Document not found'
-        });
-      }
-    });
+app.post('/addSharedDocument', function(req, res) {
+  Doc.findById(req.body.doc_id, function(err, doc) {
+    if (err) {
+      res.send({
+        added: false,
+        error: err
+      });
+    } else {
+      User.findById(req.body.user_id, function(err, user) {
+        if (err) {
+          res.send({
+            added: false,
+            error: err
+          });
+        } else {
+          user.docs.push(doc._id);
+          user.save();
+          doc.contributors.push(user._id);
+          doc.save();
+          res.send({
+            added: true,
+          });
+        }
+      });
+    }
   });
 });
 

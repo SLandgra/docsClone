@@ -13,7 +13,6 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    console.log(localStorage.getItem('user_id'));
     axios.post('http://localhost:3000/getDocs', {
       id: localStorage.getItem('user_id')
     })
