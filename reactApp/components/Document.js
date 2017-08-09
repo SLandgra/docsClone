@@ -68,7 +68,9 @@ class Document extends React.Component {
       editorState: EditorState.createEmpty(),
       name: '',
       id: '',
-      socket: io('http://localhost:3000')
+      socket: io('http://localhost:3000'),
+      historyOn: false,
+      history: [],
     };
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.setDomEditorRef = ref => this.domEditor = ref;
@@ -79,6 +81,7 @@ class Document extends React.Component {
   }
   componentDidMount() {
     var that = this;
+    this.domEditor.focus();
     this.state.socket.on('connect', ()=> {
       console.log('connected');
       that.state.socket.on('documentEdit', function(state){
@@ -162,38 +165,52 @@ class Document extends React.Component {
       alert('Error', err);
     });
   }
+  _onHistoryClick() {
+    console.log("Obtaining History boiiiis");
+    axios.post('http://localhost:3000/obtainHistory', {
+      id: this.props.match.params.id,
+    })
+    .then(response => {
+      console.log(response);
+      this.setState({historyOn: true, history: response});
+    })
+    .cathc(err => {
+      alert('Error:', err);
+    });
+  }
   render() {
     return (
       <div style={{backgroundColor: '#e9e9e9', display: 'flex', flexDirection: 'column'}}>
-      <TopBar
-      name={this.state.name}
-      id={this.state.id}
-      onBoldClick={this._onTextEditClick.bind(this, 'BOLD')}
-      onItalicClick={this._onTextEditClick.bind(this, 'ITALIC')}
-      onULClick={this._onTextEditClick.bind(this, 'UNDERLINE')}
-      onStrikeClick={this._onTextEditClick.bind(this, 'STRIKETHROUGH')}
-      onLeftAlignClick={this._onLeftAlignClick.bind(this)}
-      onRightAlignClick={this._onRightAlignClick.bind(this)}
-      onCenterAlignClick={this._onCenterAlignClick.bind(this)}
-      handleFontSizeChange={this._onFontSizeChange.bind(this)}
-      handleColorChange={this._onFontColorChange.bind(this)}
-      handleUnorderedChange={this._onUnorderedist.bind(this)}
-      handleOrderedChange={this._onOrderedList.bind(this)}
-      onSaveClick={this._onSaveClick.bind(this)}
-      />
-      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-      <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}}>
-      <Editor
-      customStyleMap={styleMap}
-      editorState={this.state.editorState}
-      textAlignment={this.state.textAlignment}
-      handleKeyCommand={this.handleKeyCommand}
-      onChange={this.onChange.bind(this)}
-      ref={this.setDomEditorRef}
-      blockRenderMap={extendedBlockRenderMap}
-      />
-      </div>
-      </div>
+        <TopBar
+          name={this.state.name}
+          id={this.state.id}
+          onBoldClick={this._onTextEditClick.bind(this, 'BOLD')}
+          onItalicClick={this._onTextEditClick.bind(this, 'ITALIC')}
+          onULClick={this._onTextEditClick.bind(this, 'UNDERLINE')}
+          onStrikeClick={this._onTextEditClick.bind(this, 'STRIKETHROUGH')}
+          onLeftAlignClick={this._onLeftAlignClick.bind(this)}
+          onRightAlignClick={this._onRightAlignClick.bind(this)}
+          onCenterAlignClick={this._onCenterAlignClick.bind(this)}
+          handleFontSizeChange={this._onFontSizeChange.bind(this)}
+          handleColorChange={this._onFontColorChange.bind(this)}
+          handleUnorderedChange={this._onUnorderedist.bind(this)}
+          handleOrderedChange={this._onOrderedList.bind(this)}
+          onSaveClick={this._onSaveClick.bind(this)}
+          onHistoryClick={this._onHistoryClick.bind(this)}
+        />
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}}>
+            <Editor
+              customStyleMap={styleMap}
+              editorState={this.state.editorState}
+              textAlignment={this.state.textAlignment}
+              handleKeyCommand={this.handleKeyCommand}
+              onChange={this.onChange.bind(this)}
+              ref={this.setDomEditorRef}
+              blockRenderMap={extendedBlockRenderMap}
+            />
+          </div>
+        </div>
       </div>
     );
   }

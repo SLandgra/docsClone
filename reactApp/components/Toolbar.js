@@ -2,12 +2,13 @@ import React from 'react';
 import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const Toolbar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftAlignClick, onRightAlignClick, onCenterAlignClick, onFontSizeChange, onFontColorChange, onOrderedChange, onUnorderedChange, onSaveClick }) => {
+const Toolbar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftAlignClick, onRightAlignClick, onCenterAlignClick, onFontSizeChange, onFontColorChange, onOrderedChange, onUnorderedChange, onSaveClick, onHistoryClick }) => {
   return (
     <div style={{display: 'flex', overflow: 'hidden', width: '100%', backgroundColor: '#e9e9e9', padding: '20px 0px 20px 40px', borderBottom: '2px solid grey'}}>
       <ButtonGroup style={{marginRight: '20px'}}>
-        <Button><Link to="/home">Home</Link></Button>
+        <Link to="/home"><Button>Home</Button></Link>
         <Button onClick={() => onSaveClick()}>Save</Button>
+        <Button onClick={() => onHistoryClick()}>History</Button>
       </ButtonGroup>
       <ButtonGroup style={{marginRight: '5px'}}>
         <Button onClick={() => onBoldClick()}>

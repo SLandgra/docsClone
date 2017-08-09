@@ -2,7 +2,7 @@ import React from 'react';
 import Toolbar from './Toolbar';
 import DocInfo from './DocInfo';
 
-const TopBar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftAlignClick, onRightAlignClick, onCenterAlignClick, handleFontSizeChange, handleColorChange, handleOrderedChange, handleUnorderedChange, onSaveClick, name, id }) => {
+const TopBar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftAlignClick, onRightAlignClick, onCenterAlignClick, handleFontSizeChange, handleColorChange, handleOrderedChange, handleUnorderedChange, onSaveClick, onHistoryClick, name, id }) => {
   return (
     <div style={{backgroundColor: '#dbdbdb', position: 'fixed', width: '100%', overflow: 'hidden'}}>
       <DocInfo name={name} id={id}/>
@@ -19,6 +19,7 @@ const TopBar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftAl
         onOrderedChange={handleOrderedChange}
         onUnorderedChange={handleUnorderedChange}
         onSaveClick={onSaveClick}
+        onHistoryClick={onHistoryClick}
       />
     </div>
   );
