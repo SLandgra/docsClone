@@ -81,10 +81,11 @@ class Document extends React.Component {
     })
     .then(response => {
       // var newstate = this.state.editorState;
-      // var newcontent = response.data.content[response.data.content.length-1];
-      // newstate.content = convertFromRaw(newcontent);
+      var newcontent = response.data.content[response.data.content.length-1];
+      newcontent = convertFromRaw(newcontent);
       // console.log('newstate v2', newstate.content);
-      this.setState({name: response.data.title, id: this.props.match.params.id});
+      newcontent= EditorState.createWithContent(newcontent);
+      this.setState({name: response.data.title, id: this.props.match.params.id, editorState: newcontent});
     })
     .catch(err => {
       console.log("Error in Document componentDidMount", err);
