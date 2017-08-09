@@ -35,13 +35,14 @@ const Toolbar = ({ onBoldClick, onItalicClick, onULClick, onStrikeClick, onLeftA
           </select>
         <select onChange={(e) => onFontSizeChange(e)} style={{height: '100%'}}>
           <optgroup>Font Color</optgroup>
-            <option value="red" style={{background:"red"}}></option>
-            <option value="orange" style={{background:"orange"}}></option>
-            <option value="yellow" style={{background:"yellow"}}></option>
-            <option value="green" style={{background:"green"}}></option>
-            <option value="blue" style={{background:"blue"}}></option>
-            <option value="purple" style={{background:"purple"}}></option>
-            <option value="black" style={{background:"black"}}></option>
+            <option selected disabled>--color</option>
+            <option value="red" style={{background:"red", color: 'red'}}>Red</option>
+            <option value="orange" style={{background:"orange", color: 'orange'}}>Orange</option>
+            <option value="yellow" style={{background:"yellow", color: 'yellow'}}>Yellow</option>
+            <option value="green" style={{background:"green", color: 'green'}}>Green</option>
+            <option value="blue" style={{background:"blue", color: 'blue'}}>Blue</option>
+            <option value="purple" style={{background:"purple", color: 'purple'}}>Purple</option>
+            <option value="black" style={{background:"black", color: 'black'}}>Black</option>
         </select>
       </ButtonGroup>
       <ButtonGroup style={{marginRight: '5px'}}>

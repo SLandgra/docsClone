@@ -77,13 +77,13 @@ class Document extends React.Component {
     this.setState({editorState});
   }
   componentDidMount() {
+    this.domEditor.focus();
     this.state.socket.on('connect', ()=> {
       console.log('connected');
       this.state.socket.emit('yall gon make us start this socket up in here up in here');
     });
   }
   componentWillMount() {
-    this.domEditor.focus();
     axios.post('http://localhost:3000/document', {
       id: this.props.match.params.id
     })
