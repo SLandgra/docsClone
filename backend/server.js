@@ -54,7 +54,7 @@ app.post('/login', function(req, res) {
       res.send({
         login: true,
         user_id: user._id,
-      })
+      });
     } else {
       res.send({
         login: false,
