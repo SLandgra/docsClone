@@ -32,15 +32,15 @@ io.on('connection', function(socket){
     socket.emit('roomfull','Room is Full');
   }else{
     socket.on('documentChange', function(docChange){
-      io.broadcast('documentEdit', docChange);
+      socket.broadcast.emit('documentEdit', docChange);
     });
 
     socket.on('cursorClick', function(position){
-      io.broadcast('cursorPosition', position);
+      socket.broadcast.emit('cursorPosition', position);
     });
 
     socket.on('highlight', function(highlight){
-      io.broadcast('highlighter', highlight);
+      socket.broadcast.emit('highlighter', highlight);
     });
   }
 });
