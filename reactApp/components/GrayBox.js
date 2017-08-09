@@ -31,7 +31,7 @@ class GrayBox extends React.Component {
     })
     .then(response => {
       this.setState({docName: ''});
-      window.location.reload();
+      this.props.addDoc(response.data.doc);
     })
     .catch(err => {
       console.log("Error in onCreateClick in GrayBox", err);
@@ -48,12 +48,11 @@ class GrayBox extends React.Component {
       user_id: localStorage.getItem('user_id')
     })
     .then(response => {
-      console.log("this is response", response);
       if (! response.data.added) {
         console.log("Error onAddClick GrayBox", response.data.error);
       } else {
         this.setState({sharedDocId: ''});
-        window.location.reload();
+        this.props.addDoc(response.data.doc);
       }
     })
     .catch(err => {
