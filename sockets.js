@@ -31,8 +31,7 @@ io.on('connection', function(socket){
     });
   }
 
-
-
-
-
+  const port = 8080;
+  io.listen(port);
+  console.log('listening on port ', port);
 });

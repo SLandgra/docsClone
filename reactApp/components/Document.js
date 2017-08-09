@@ -69,11 +69,12 @@ class Document extends React.Component {
       name: '',
       id: '',
     };
-    this.onChange = (editorState) => this.setState({editorState});
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.setDomEditorRef = ref => this.domEditor = ref;
   }
-
+  onChange(editorState){
+    this.setState({editorState});
+  }
   componentDidMount() {
     this.domEditor.focus();
     axios.post('http://localhost:3000/document', {
@@ -171,7 +172,7 @@ class Document extends React.Component {
               editorState={this.state.editorState}
               textAlignment={this.state.textAlignment}
               handleKeyCommand={this.handleKeyCommand}
-              onChange={this.onChange}
+              onChange={this.onChange.bind(this)}
               ref={this.setDomEditorRef}
               blockRenderMap={extendedBlockRenderMap}
             />
