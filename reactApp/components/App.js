@@ -24,7 +24,10 @@ class App extends React.Component {
           <Switch>
             <Route exact={true} path="/home" render={() => (<HomePage />)}/>
             <Route exact={true} path="/register" component={Register} />
-            <Route exact={true} path="/login" render={() => <Login />}/>
+            <Route exact={true} path="/login" render={() => <Login />}>
+              {localStorage.removeItem('user_id')}
+              {localStorage.removeItem('password')}
+            </Route>
             <Route exact={true} path="/document/:id" component={Document}/>
             <Route path="/">
               {! localStorage.getItem('user_id') ? <Redirect to="/login" /> : <Redirect to="/home" />}

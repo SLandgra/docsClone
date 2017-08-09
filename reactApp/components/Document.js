@@ -85,7 +85,6 @@ class Document extends React.Component {
       newstate.content = convertFromRaw(newcontent);
       console.log('newstate v2', newstate.content);
       this.setState({name: response.data.title, id: this.props.match.params.id, editorState: newstate});
-
     })
     .catch(err => {
       console.log("Error in Document componentDidMount", err);
