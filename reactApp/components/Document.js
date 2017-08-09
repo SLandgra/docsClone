@@ -68,7 +68,7 @@ class Document extends React.Component {
       editorState: EditorState.createEmpty(),
       name: '',
       id: '',
-      socket: io()
+      socket: io('http://localhost:3000')
     };
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.setDomEditorRef = ref => this.domEditor = ref;
@@ -79,11 +79,10 @@ class Document extends React.Component {
   componentDidMount() {
     this.state.socket.on('connect', ()=> {
       console.log('connected');
-      this.state.socket.emit('yall gon make us start this socket up in here up in here');
+      this.state.socket.emit('working');
     });
   }
   componentWillMount() {
-    this.domEditor.focus();
     axios.post('http://localhost:3000/document', {
       id: this.props.match.params.id
     })
