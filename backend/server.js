@@ -181,6 +181,15 @@ app.post('/save', function(req,res){
   });
 });
 
+app.post('/obtainHistory', function(req, res) {
+  Doc.findById(req.body.id, function(err, doc) {
+    res.send({
+      get: true,
+      doc: doc
+    });
+  });
+});
+
 app.post('/addSharedDocument', function(req, res) {
   Doc.findById(req.body.doc_id, function(err, doc) {
     if (err) {

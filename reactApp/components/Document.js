@@ -68,7 +68,9 @@ class Document extends React.Component {
       editorState: EditorState.createEmpty(),
       name: '',
       id: '',
-      socket: io('http://localhost:3000')
+      socket: io('http://localhost:3000'),
+      historyOn: false,
+      history: [],
     };
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.setDomEditorRef = ref => this.domEditor = ref;
@@ -78,11 +80,8 @@ class Document extends React.Component {
     this.state.socket.emit('documentChange', convertToRaw(this.state.editorState.getCurrentContent()));
   }
   componentDidMount() {
-<<<<<<< HEAD
     var that = this;
-=======
     this.domEditor.focus();
->>>>>>> c2e21546a139500135d90f60613542208c5205f1
     this.state.socket.on('connect', ()=> {
       console.log('connected');
       that.state.socket.on('documentEdit', function(state){
@@ -162,6 +161,19 @@ class Document extends React.Component {
       alert('Error', err);
     });
   }
+  _onHistoryClick() {
+    console.log("Obtaining History boiiiis");
+    axios.post('http://localhost:3000/obtainHistory', {
+      id: this.props.match.params.id,
+    })
+    .then(response => {
+      console.log(response);
+      this.setState({historyOn: true, history: response});
+    })
+    .cathc(err => {
+      alert('Error:', err);
+    });
+  }
   render() {
     return (
       <div style={{backgroundColor: '#e9e9e9', display: 'flex', flexDirection: 'column'}}>
@@ -180,6 +192,7 @@ class Document extends React.Component {
           handleUnorderedChange={this._onUnorderedist.bind(this)}
           handleOrderedChange={this._onOrderedList.bind(this)}
           onSaveClick={this._onSaveClick.bind(this)}
+          onHistoryClick={this._onHistoryClick.bind(this)}
         />
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}}>
