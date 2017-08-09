@@ -101,6 +101,7 @@ class Document extends React.Component {
         this.setState({name: response.data.title, id: this.props.match.params.id})
       }else{
         var newcontent = response.data.content[response.data.content.length-1];
+        console.log(newcontent);
         newcontent = convertFromRaw(newcontent);
         // console.log('newstate v2', newstate.content);
         newcontent= EditorState.createWithContent(newcontent);
@@ -174,7 +175,7 @@ class Document extends React.Component {
       console.log(response);
       this.setState({historyOn: true, history: response});
     })
-    .cathc(err => {
+    .catch(err => {
       alert('Error:', err);
     });
   }
