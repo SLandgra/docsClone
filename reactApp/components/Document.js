@@ -94,11 +94,15 @@ class Document extends React.Component {
     })
     .then(response => {
       // var newstate = this.state.editorState;
-      var newcontent = response.data.content[response.data.content.length-1];
-      newcontent = convertFromRaw(newcontent);
-      // console.log('newstate v2', newstate.content);
-      newcontent= EditorState.createWithContent(newcontent);
-      this.setState({name: response.data.title, id: this.props.match.params.id, editorState: newcontent});
+      if(response.data.content.length === 0){
+        this.setState({name: response.data.title, id: this.props.match.params.id})
+      }else{
+        var newcontent = response.data.content[response.data.content.length-1];
+        newcontent = convertFromRaw(newcontent);
+        // console.log('newstate v2', newstate.content);
+        newcontent= EditorState.createWithContent(newcontent);
+        this.setState({name: response.data.title, id: this.props.match.params.id, editorState: newcontent});
+      }
     })
     .catch(err => {
       console.log("Error in Document componentDidMount", err);
@@ -161,35 +165,35 @@ class Document extends React.Component {
   render() {
     return (
       <div style={{backgroundColor: '#e9e9e9', display: 'flex', flexDirection: 'column'}}>
-        <TopBar
-          name={this.state.name}
-          id={this.state.id}
-          onBoldClick={this._onTextEditClick.bind(this, 'BOLD')}
-          onItalicClick={this._onTextEditClick.bind(this, 'ITALIC')}
-          onULClick={this._onTextEditClick.bind(this, 'UNDERLINE')}
-          onStrikeClick={this._onTextEditClick.bind(this, 'STRIKETHROUGH')}
-          onLeftAlignClick={this._onLeftAlignClick.bind(this)}
-          onRightAlignClick={this._onRightAlignClick.bind(this)}
-          onCenterAlignClick={this._onCenterAlignClick.bind(this)}
-          handleFontSizeChange={this._onFontSizeChange.bind(this)}
-          handleColorChange={this._onFontColorChange.bind(this)}
-          handleUnorderedChange={this._onUnorderedist.bind(this)}
-          handleOrderedChange={this._onOrderedList.bind(this)}
-          onSaveClick={this._onSaveClick.bind(this)}
-        />
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}}>
-            <Editor
-              customStyleMap={styleMap}
-              editorState={this.state.editorState}
-              textAlignment={this.state.textAlignment}
-              handleKeyCommand={this.handleKeyCommand}
-              onChange={this.onChange.bind(this)}
-              ref={this.setDomEditorRef}
-              blockRenderMap={extendedBlockRenderMap}
-            />
-          </div>
-        </div>
+      <TopBar
+      name={this.state.name}
+      id={this.state.id}
+      onBoldClick={this._onTextEditClick.bind(this, 'BOLD')}
+      onItalicClick={this._onTextEditClick.bind(this, 'ITALIC')}
+      onULClick={this._onTextEditClick.bind(this, 'UNDERLINE')}
+      onStrikeClick={this._onTextEditClick.bind(this, 'STRIKETHROUGH')}
+      onLeftAlignClick={this._onLeftAlignClick.bind(this)}
+      onRightAlignClick={this._onRightAlignClick.bind(this)}
+      onCenterAlignClick={this._onCenterAlignClick.bind(this)}
+      handleFontSizeChange={this._onFontSizeChange.bind(this)}
+      handleColorChange={this._onFontColorChange.bind(this)}
+      handleUnorderedChange={this._onUnorderedist.bind(this)}
+      handleOrderedChange={this._onOrderedList.bind(this)}
+      onSaveClick={this._onSaveClick.bind(this)}
+      />
+      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <div style={{backgroundColor: 'white', height: '864px', width: '816px', padding: '96px', margin: '200px'}}>
+      <Editor
+      customStyleMap={styleMap}
+      editorState={this.state.editorState}
+      textAlignment={this.state.textAlignment}
+      handleKeyCommand={this.handleKeyCommand}
+      onChange={this.onChange.bind(this)}
+      ref={this.setDomEditorRef}
+      blockRenderMap={extendedBlockRenderMap}
+      />
+      </div>
+      </div>
       </div>
     );
   }
