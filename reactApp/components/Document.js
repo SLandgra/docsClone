@@ -79,7 +79,10 @@ class Document extends React.Component {
   }
   onChange(editorState){
     this.setState({editorState});
-    this.state.socket.emit('documentChange', convertToRaw(this.state.editorState.getCurrentContent()));
+    this.state.socket.emit('documentChange', {content: convertToRaw(
+      this.state.editorState.getCurrentContent()),
+      cursor: this.state.editorState.getSelection()
+    });
   }
   componentDidMount() {
     var that = this;
@@ -87,7 +90,8 @@ class Document extends React.Component {
     this.state.socket.on('connect', ()=> {
       console.log('connected');
       that.state.socket.on('documentEdit', function(state){
-        var newcontent = convertFromRaw(state);
+        console.log(state.cursor);
+        var newcontent = convertFromRaw(state.content);
         newcontent = EditorState.createWithContent(newcontent);
         that.setState({editorState: newcontent});
       });
